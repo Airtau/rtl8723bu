@@ -56,8 +56,9 @@ CONFIG_PNO_SUPPORT = n
 CONFIG_PNO_SET_DEBUG = n
 CONFIG_AP_WOWLAN = n
 ###################### Platform Related #######################
-CONFIG_PLATFORM_I386_PC = y
+CONFIG_PLATFORM_I386_PC = n
 CONFIG_PLATFORM_FS_MX61 = n
+CONFIG_PLATFORM_S5P = y
 ###############################################################
 
 CONFIG_DRVEXT_MODULE = n
@@ -274,6 +275,18 @@ EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -Wno-error=date-time
 ARCH := arm
 KSRC ?= $(KERNEL_SRC)
 MODDESTDIR := kernel/drivers/net/wireless/
+LICENSE = "GPLv2"
+endif
+
+ifeq ($(CONFIG_PLATFORM_S5P), y)
+EXTRA_CFLAGS += -DCONFIG_IOCTL_CFG80211
+EXTRA_CFLAGS += -DRTW_USE_CFG80211_STA_EVENT # only enable when kernel >= 3.2
+EXTRA_CFLAGS += -DCONFIG_P2P_IPS
+EXTRA_CFLAGS += -DCONFIG_LITTLE_ENDIAN -Wno-error=date-time
+ARCH := arm64
+CROSS_COMPILE=aarch64-linux-gnu-
+KSRC ?= $(KERNEL_SRC)
+MODDESTDIR := $(INSTALL_MOD_PATH)/kernel/drivers/net/wireless/realtek/rtl8723bu/
 LICENSE = "GPLv2"
 endif
 
